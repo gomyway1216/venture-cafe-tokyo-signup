@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  color: blueviolet;
+}
+
+/* somehow item-wrapper works for gatsby project, but I need to follow camelCase here somehow */
+.itemWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.item {
+  margin: 2px;
+}

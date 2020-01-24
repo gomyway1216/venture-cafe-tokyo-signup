@@ -6,6 +6,7 @@ import BookingsPage from "./pages/Bookings";
 import EventsPage from "./pages/Events";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import AuthContext from "./context/auth-context";
+import CheckIn from "./pages/CheckIn";
 
 import "./App.css";
 
@@ -47,6 +48,9 @@ class App extends Component {
                   <Route path="/auth" component={AuthPage} />
                 )}
                 <Route path="/events" component={EventsPage} />
+
+                <Route path="/checkin" component={CheckIn} />
+
                 {this.state.token && (
                   <Route path="/bookings" component={BookingsPage} />
                 )}
