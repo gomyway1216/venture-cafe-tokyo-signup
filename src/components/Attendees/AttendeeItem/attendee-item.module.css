@@ -8,8 +8,14 @@
 .itemWrapper {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .item {
-  margin: 2px;
+  /* margin: auto; */
+  font-size: x-large;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 10px;
 }

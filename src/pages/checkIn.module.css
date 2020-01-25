@@ -1,0 +1,19 @@
+.attendeesContainer {
+  margin: auto;
+}
+
+.addNewAttendee {
+  /* margin: 20vh, auto; */
+  margin-top: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputBox {
+  width: 60vw;
+  /* height: 10%; */
+  /* height: 200px; */
+  height: 3vh;
+  font-size: xx-large;
+}

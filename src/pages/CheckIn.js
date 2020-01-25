@@ -1,49 +1,50 @@
-import React, { useState, Component } from "react";
-import { TextField, Button } from "@material-ui/core/";
-import { withStyles } from "@material-ui/core/styles";
-import AuthContext from "../context/auth-context";
-import Spinner from "../components/Spinner/Spinner";
-import AttendeeList from "../components/Attendees/AttendeeList";
+import React, { useState, Component } from 'react'
+import { TextField, Button } from '@material-ui/core/'
+import { withStyles } from '@material-ui/core/styles'
+import AuthContext from '../context/auth-context'
+import Spinner from '../components/Spinner/Spinner'
+import AttendeeList from '../components/Attendees/AttendeeList'
+import styles from './checkIn.module.css'
 
 const useStyles = theme => ({
   root: {
-    "& .MuiTextField-root": {
+    '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: 200
-    }
-  }
-});
+      width: 200,
+    },
+  },
+})
 
 class FormPropsTextFields extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
+      name: '',
       isLoading: false,
-      attendees: []
-    };
+      attendees: [],
+    }
   }
 
-  isActive = true;
+  isActive = true
 
-  static contextType = AuthContext;
+  static contextType = AuthContext
 
   onNameChange = event => {
-    this.setState({ name: event.target.value });
-  };
+    this.setState({ name: event.target.value })
+  }
 
   onRegister = () => {
-    const userId = this.state.name.concat(" id");
-    const name = this.state.name;
-    const drinkCounter = 0;
-    const date = new Date().toISOString();
+    const userId = this.state.name.concat(' id')
+    const name = this.state.name
+    const drinkCounter = 0
+    const date = new Date().toISOString()
 
-    console.log("userId", userId);
-    console.log("name", name);
-    console.log("drinkCounter", drinkCounter);
-    console.log("date", date);
+    console.log('userId', userId)
+    console.log('name', name)
+    console.log('drinkCounter', drinkCounter)
+    console.log('date', date)
 
-    if (name.trim() !== "") {
+    if (name.trim() !== '') {
       const requestBody = {
         query: `
           mutation CheckInAttendee($userId: String!, $name: String!, $drinkCounter: Int!, $date: String!){
@@ -58,42 +59,43 @@ class FormPropsTextFields extends Component {
           userId: userId,
           name: name,
           drinkCounter: drinkCounter,
-          date: date
-        }
-      };
+          date: date,
+        },
+      }
 
       fetch(`${process.env.REACT_APP_URL}graphql`, {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
-          "Content-Type": "application/json"
-        }
+          'Content-Type': 'application/json',
+        },
       })
         .then(res => {
           if (res.status !== 200 && res.status !== 201) {
-            throw new Error("Failed!");
+            throw new Error('Failed!')
           }
-          return res.json();
+          return res.json()
         })
         .then(resData => {
           this.setState(prevState => {
-            const updatedAttendees = [...prevState.attendees];
+            const updatedAttendees = [...prevState.attendees]
             updatedAttendees.push({
               userId: resData.data.checkInAttendee.userId,
               name: resData.data.checkInAttendee.name,
-              drinkCounter: resData.data.checkInAttendee.drinkCounter
-            });
-            return { attendees: updatedAttendees };
-          });
+              drinkCounter: resData.data.checkInAttendee.drinkCounter,
+            })
+            return { attendees: updatedAttendees }
+          })
+          this.setState({ name: '' })
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
-  };
+  }
 
   fetchAttendees() {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true })
     const requestBody = {
       query: `
             query {
@@ -103,58 +105,69 @@ class FormPropsTextFields extends Component {
                     drinkCounter
                 }
             }
-          `
-    };
+          `,
+    }
 
     fetch(`${process.env.REACT_APP_URL}graphql`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/json',
+      },
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
+          throw new Error('Failed!')
         }
-        return res.json();
+        return res.json()
       })
       .then(resData => {
-        const attendees = resData.data.attendees;
+        const attendees = resData.data.attendees
         if (this.isActive) {
-          this.setState({ attendees: attendees, isLoading: false });
+          this.setState({ attendees: attendees, isLoading: false })
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log(err)
         if (this.isActive) {
-          this.setState({ isLoading: false });
+          this.setState({ isLoading: false })
         }
-      });
+      })
   }
 
   componentDidMount() {
-    this.fetchAttendees();
+    this.fetchAttendees()
   }
 
   componentWillUnmount() {
-    this.isActive = false;
+    this.isActive = false
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     return (
-      <div>
-        <div>
-          <form className={classes.root} noValidate autoComplete="off">
-            <TextField
-              required
-              id="standard-required"
-              label="Required"
-              value={this.state.name}
-              onChange={this.onNameChange}
-            />
-          </form>
+      <div className={styles.attendeesContainer}>
+        <div className={styles.addNewAttendee}>
+          {/* <form
+            noValidate
+            autoComplete="off"
+            className={styles.inputBoxContainer}
+          > */}
+          {/* <TextField
+            required
+            id="standard-required"
+            label="Required"
+            value={this.state.name}
+            onChange={this.onNameChange}
+            className={styles.inputBox}
+          /> */}
+          <input
+            value={this.state.name}
+            placeholder="Enter your name"
+            onChange={this.onNameChange}
+            className={styles.inputBox}
+          />
+          {/* </form> */}
           <Button variant="contained" color="primary" onClick={this.onRegister}>
             Register
           </Button>
@@ -168,8 +181,8 @@ class FormPropsTextFields extends Component {
           )}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(useStyles, { withTheme: true })(FormPropsTextFields);
+export default withStyles(useStyles, { withTheme: true })(FormPropsTextFields)
