@@ -11,17 +11,26 @@ import CheckIn from './pages/CheckIn'
 import './App.css'
 
 class App extends Component {
-  state = {
-    token: null,
-    userId: null,
+  constructor(props) {
+    super(props)
+    const loginInfo = JSON.parse(localStorage.getItem('loginInfo'))
+    this.state = {
+      token: loginInfo ? loginInfo.token : null,
+      userId: loginInfo ? loginInfo.token : null,
+    }
   }
 
   login = (token, userId, tokenExpiration) => {
     this.setState({ token: token, userId: userId })
+    localStorage.setItem(
+      'loginInfo',
+      JSON.stringify({ token: token, userId: userId })
+    )
   }
 
   logout = () => {
     this.setState({ token: null, userId: null })
+    localStorage.removeItem('loginInfo')
   }
 
   render() {
