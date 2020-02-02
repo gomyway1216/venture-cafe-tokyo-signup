@@ -7,6 +7,7 @@ import EventsPage from './pages/Events'
 import MainNavigation from './components/Navigation/MainNavigation'
 import AuthContext from './context/auth-context'
 import CheckIn from './pages/CheckIn'
+import SignUp from './pages/SignUp'
 
 import './App.css'
 
@@ -71,6 +72,7 @@ class App extends Component {
                   <Route path="/bookings" component={BookingsPage} />
                 )} */}
                 {!this.state.token && <Redirect to="/auth" exact />}
+                <Route path="/signup" component={SignUp} />
               </Switch>
             </main>
           </AuthContext.Provider>

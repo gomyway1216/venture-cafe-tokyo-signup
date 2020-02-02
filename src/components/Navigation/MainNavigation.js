@@ -1,8 +1,8 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-import AuthContext from "../../context/auth-context";
-import "./MainNavigation.css";
+import AuthContext from '../../context/auth-context'
+import './MainNavigation.css'
 
 const mainNavigation = props => (
   <AuthContext.Consumer>
@@ -25,6 +25,9 @@ const mainNavigation = props => (
               <li>
                 <NavLink to="/checkin">Check In</NavLink>
               </li>
+              <li>
+                <NavLink to="/signup">Sign Up</NavLink>
+              </li>
               {context.token && (
                 <React.Fragment>
                   {/* <li>
@@ -39,9 +42,9 @@ const mainNavigation = props => (
             </ul>
           </nav>
         </header>
-      );
+      )
     }}
   </AuthContext.Consumer>
-);
+)
 
-export default mainNavigation;
+export default mainNavigation

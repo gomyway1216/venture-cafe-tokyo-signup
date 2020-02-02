@@ -5,6 +5,7 @@ import AuthContext from '../context/auth-context'
 import Spinner from '../components/Spinner/Spinner'
 import AttendeeList from '../components/Attendees/AttendeeList'
 import styles from './checkIn.module.css'
+var QRCode = require('qrcode.react')
 
 const useStyles = theme => ({
   root: {
