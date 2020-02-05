@@ -25,6 +25,19 @@ const SignUp = () => {
 }
 
 const QRCodeScreen = props => {
+  const downloadQR = () => {
+    const canvas = document.getElementById('123456')
+    const pngUrl = canvas
+      .toDataURL('image/png')
+      .replace('image/png', 'image/octet-stream')
+    let downloadLink = document.createElement('a')
+    downloadLink.href = pngUrl
+    downloadLink.download = '123456.png'
+    document.body.appendChild(downloadLink)
+    downloadLink.click()
+    document.body.removeChild(downloadLink)
+  }
+
   return (
     <div>
       <div>
@@ -34,7 +47,12 @@ const QRCodeScreen = props => {
         Please save this QR code to your phone. You need this to get drinks.
       </div>
       <div>
-        <QRCode value={props.id} includeMargin={props.includeMargin} />
+        <QRCode
+          value={props.id}
+          id="123456"
+          includeMargin={props.includeMargin}
+        />
+        <a onClick={downloadQR}> Download QR </a>
       </div>
     </div>
   )
