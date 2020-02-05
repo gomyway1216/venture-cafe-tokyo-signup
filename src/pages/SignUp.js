@@ -40,20 +40,18 @@ const QRCodeScreen = props => {
   }
 
   return (
-    <div>
-      <div>
-        このQRコードを保存してください。ドリンクを注文する際に必要となります。
+    <div className={styles.qrPage}>
+      <div className={styles.qrDescription}>
+        <div>
+          このQRコードをスクリーンショットしてください。ドリンクを注文する際に必要となります。
+        </div>
+        <div>
+          Please take a screenshot of this QR code on your phone. We use this to
+          check-in at the bar.
+        </div>
       </div>
       <div>
-        Please save this QR code to your phone. You need this to get drinks.
-      </div>
-      <div>
-        <QRCode
-          value={props.id}
-          id="123456"
-          style={{ maxWidth: 256 }}
-          includeMargin={props.includeMargin}
-        />
+        <QRCode value={props.id} id="123456" style={{ maxWidth: 256 }} />
       </div>
     </div>
   )

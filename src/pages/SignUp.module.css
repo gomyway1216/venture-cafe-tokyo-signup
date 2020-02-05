@@ -3,6 +3,15 @@
   flex-direction: column;
 }
 
+.qrPage {
+  text-align: center;
+}
+
+.qrDescription {
+  font-size: x-large;
+  margin: 5%;
+}
+
 .qrCode {
   margin: 20px;
 }
