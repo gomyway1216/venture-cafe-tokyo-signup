@@ -33,7 +33,9 @@ const QRCodeScreen = props => {
       <div>
         Please save this QR code to your phone. You need this to get drinks.
       </div>
-      <QRCode value={props.id} includeMargin={props.includeMargin} />
+      <div>
+        <QRCode value={props.id} includeMargin={props.includeMargin} />
+      </div>
     </div>
   )
 }
