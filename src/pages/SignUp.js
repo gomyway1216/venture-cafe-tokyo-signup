@@ -51,9 +51,9 @@ const QRCodeScreen = props => {
         <QRCode
           value={props.id}
           id="123456"
+          style={{ maxWidth: 256 }}
           includeMargin={props.includeMargin}
         />
-        <a onClick={downloadQR}> Download QR </a>
       </div>
     </div>
   )
