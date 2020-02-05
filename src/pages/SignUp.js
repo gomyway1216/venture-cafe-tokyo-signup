@@ -1,6 +1,7 @@
 import React, { useState, Component } from 'react'
 import { TextField, Button } from '@material-ui/core'
-import QRCode from 'qrcode.react'
+// import QRCode from 'qrcode.react'
+import { QRCode } from 'react-qr-svg'
 import styles from './SignUp.module.css'
 
 const SignUp = () => {
