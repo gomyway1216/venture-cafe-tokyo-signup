@@ -19,8 +19,22 @@ const SignUp = () => {
       )}
       {console.log(signUpMode)}
       {console.log(signUpMode)}
-      {!signUpMode && !loading && <QRCode value={id} />}
+      {!signUpMode && !loading && <QRCodeScreen id={id} includeMargin={true} />}
     </>
+  )
+}
+
+const QRCodeScreen = props => {
+  return (
+    <div>
+      <div>
+        このQRコードを保存してください。ドリンクを注文する際に必要となります。
+      </div>
+      <div>
+        Please save this QR code to your phone. You need this to get drinks.
+      </div>
+      <QRCode value={props.id} includeMargin={props.includeMargin} />
+    </div>
   )
 }
 
