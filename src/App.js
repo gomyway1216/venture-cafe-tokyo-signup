@@ -1,14 +1,7 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
-
-import AuthPage from './pages/Auth'
-import BookingsPage from './pages/Bookings'
-import EventsPage from './pages/Events'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import MainNavigation from './components/Navigation/MainNavigation'
-import AuthContext from './context/auth-context'
-import CheckIn from './pages/CheckIn'
 import SignUp from './pages/SignUp'
-
 import './App.css'
 
 class App extends Component {
@@ -39,21 +32,12 @@ class App extends Component {
     return (
       <BrowserRouter>
         <React.Fragment>
-          <AuthContext.Provider
-            value={{
-              token: this.state.token,
-              userId: this.state.userId,
-              login: this.login,
-              logout: this.logout,
-            }}
-          >
-            <MainNavigation />
-            <main className="main-content">
-              <Switch>
-                <Route path="/" component={SignUp} />
-              </Switch>
-            </main>
-          </AuthContext.Provider>
+          <MainNavigation />
+          <main className="main-content">
+            <Switch>
+              <Route path="/" component={SignUp} />
+            </Switch>
+          </main>
         </React.Fragment>
       </BrowserRouter>
     )

@@ -1,6 +1,5 @@
-import React, { useState, Component } from 'react'
+import React, { useState } from 'react'
 import { TextField, Button } from '@material-ui/core'
-// import QRCode from 'qrcode.react'
 import { QRCode } from 'react-qr-svg'
 import styles from './SignUp.module.css'
 
@@ -18,27 +17,12 @@ const SignUp = () => {
           setLoading={setLoading}
         />
       )}
-      {console.log(signUpMode)}
-      {console.log(signUpMode)}
       {!signUpMode && !loading && <QRCodeScreen id={id} includeMargin={true} />}
     </>
   )
 }
 
 const QRCodeScreen = props => {
-  const downloadQR = () => {
-    const canvas = document.getElementById('123456')
-    const pngUrl = canvas
-      .toDataURL('image/png')
-      .replace('image/png', 'image/octet-stream')
-    let downloadLink = document.createElement('a')
-    downloadLink.href = pngUrl
-    downloadLink.download = '123456.png'
-    document.body.appendChild(downloadLink)
-    downloadLink.click()
-    document.body.removeChild(downloadLink)
-  }
-
   return (
     <div className={styles.qrPage}>
       <div className={styles.qrDescription}>
