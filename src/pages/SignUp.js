@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { TextField, Button } from '@material-ui/core'
-import { QRCode } from 'react-qr-svg'
-import styles from './SignUp.module.css'
+import React, { useState } from "react";
+import { TextField, Button } from "@material-ui/core";
+import { QRCode } from "react-qr-svg";
+import styles from "./SignUp.module.css";
 
 const SignUp = () => {
-  const [signUpMode, setSignUpMode] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [id, setId] = useState('')
+  const [signUpMode, setSignUpMode] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [id, setId] = useState("");
 
   return (
     <>
@@ -19,8 +19,8 @@ const SignUp = () => {
       )}
       {!signUpMode && !loading && <QRCodeScreen id={id} includeMargin={true} />}
     </>
-  )
-}
+  );
+};
 
 const QRCodeScreen = props => {
   return (
@@ -38,18 +38,18 @@ const QRCodeScreen = props => {
         <QRCode value={props.id} id="123456" style={{ maxWidth: 256 }} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 const SignUpForm = props => {
-  const { setSignUpMode, setId, setLoading } = props
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
+  const { setSignUpMode, setId, setLoading } = props;
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
 
   const requestCreatingUser = () => {
     if (!validateField) {
-      return
+      return;
     }
 
     const requestBody = {
@@ -66,61 +66,60 @@ const SignUpForm = props => {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        date: new Date().toISOString(),
-      },
-    }
+        date: new Date().toISOString()
+      }
+    };
 
     // set the loading to prevent loading QR code before receiving any data
-    setLoading(true)
+    setLoading(true);
     fetch(`${process.env.REACT_APP_URL}graphql`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        'Content-Type': 'application/json',
-      },
+        "Content-Type": "application/json"
+      }
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Failed!')
+          throw new Error("Failed!");
         }
-        return res.json()
+        return res.json();
       })
       .then(resData => {
-        const attendee = resData.data.signUpAttendee
-        console.log('attendee', attendee)
-        setId(attendee._id)
-        setLoading(false)
+        const attendee = resData.data.signUpAttendee;
+        setId(attendee._id);
+        setLoading(false);
         // to show the QR code
-        setSignUpMode(false)
+        setSignUpMode(false);
       })
       .catch(err => {
-        console.log(err)
-        setLoading(false)
-      })
-  }
+        console.log(err);
+        setLoading(false);
+      });
+  };
 
   const validateField = () => {
-    if (firstName.trim() === '' || lastName.trim() === '') {
-      return false
+    if (firstName.trim() === "" || lastName.trim() === "") {
+      return false;
     }
-    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)
+    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
     if (!emailValid) {
-      return false
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const handleInputChange = event => {
-    const name = event.target.name
-    const value = event.target.value
-    if (name === 'firstName') {
-      setFirstName(value)
-    } else if (name === 'lastName') {
-      setLastName(value)
-    } else if (name === 'email') {
-      setEmail(value)
+    const name = event.target.name;
+    const value = event.target.value;
+    if (name === "firstName") {
+      setFirstName(value);
+    } else if (name === "lastName") {
+      setLastName(value);
+    } else if (name === "email") {
+      setEmail(value);
     }
-  }
+  };
 
   return (
     <div className={styles.signUpForm}>
@@ -152,6 +151,6 @@ const SignUpForm = props => {
         Sign Up
       </Button>
     </div>
-  )
-}
-export default SignUp
+  );
+};
+export default SignUp;
