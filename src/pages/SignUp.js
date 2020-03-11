@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button } from "@material-ui/core";
 import { QRCode } from "react-qr-svg";
 import styles from "./SignUp.module.css";
+import { useApi } from "../hooks/useApi";
+import * as userSignupApi from "../api/userSignUp";
+import Spinner from "../components/Spinner/Spinner";
 
 const SignUp = () => {
   const [signUpMode, setSignUpMode] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [id, setId] = useState("");
+  // id passed by backend
+  const [id, setUserID] = useState("");
 
   return (
     <>
       {signUpMode && (
         <SignUpForm
           setSignUpMode={setSignUpMode}
-          setId={setId}
+          setUserID={setUserID}
           setLoading={setLoading}
         />
       )}
@@ -42,60 +46,32 @@ const QRCodeScreen = props => {
 };
 
 const SignUpForm = props => {
-  const { setSignUpMode, setId, setLoading } = props;
+  const { setSignUpMode, setUserID, setLoading } = props;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const {
+    isFetching: isFetchingSignUpUser,
+    response: signedUpUserResponse,
+    makeFetch: fetchSignUpUser
+  } = useApi(userSignupApi.userSignUp);
 
-  const requestCreatingUser = () => {
+  useEffect(() => {
+    if (!signedUpUserResponse) {
+      return;
+    }
+
+    const { id } = signedUpUserResponse.data;
+    setUserID(id);
+  }, [signedUpUserResponse]);
+
+  const signUpUser = () => {
     if (!validateField) {
       return;
     }
 
-    const requestBody = {
-      query: `
-            mutation SignUpAttendee($firstName: String!, $lastName: String!, $email: String!, $date: String!) {
-                signUpAttendee(signUpAttendeeInput: {firstName: $firstName, lastName: $lastName, email: $email, date: $date}) {
-                    _id
-                    firstName
-                    lastName
-                }
-            }
-        `,
-      variables: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        date: new Date().toISOString()
-      }
-    };
-
-    // set the loading to prevent loading QR code before receiving any data
-    setLoading(true);
-    fetch(`${process.env.REACT_APP_URL}graphql`, {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
-      })
-      .then(resData => {
-        const attendee = resData.data.signUpAttendee;
-        setId(attendee._id);
-        setLoading(false);
-        // to show the QR code
-        setSignUpMode(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false);
-      });
+    fetchSignUpUser({ firstName, lastName, email });
+    setSignUpMode(false);
   };
 
   const validateField = () => {
@@ -147,7 +123,7 @@ const SignUpForm = props => {
         onChange={handleInputChange}
         label="Email address"
       />
-      <Button variant="contained" color="primary" onClick={requestCreatingUser}>
+      <Button variant="contained" color="primary" onClick={signUpUser}>
         Sign Up
       </Button>
     </div>
