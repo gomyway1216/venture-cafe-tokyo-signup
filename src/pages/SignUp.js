@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { TextField, Button } from "@material-ui/core";
-import { QRCode } from "react-qr-svg";
-import styles from "./SignUp.module.css";
-import { useApi } from "../hooks/useApi";
-import * as userSignupApi from "../api/userSignUp";
-import Spinner from "../components/Spinner/Spinner";
+import React, { useState, useEffect } from 'react'
+import { TextField, Button } from '@material-ui/core'
+import { QRCode } from 'react-qr-svg'
+import styles from './SignUp.module.css'
+import { useApi } from '../hooks/useApi'
+import * as userSignupApi from '../api/userSignUp'
+import Spinner from '../components/Spinner/Spinner'
 
 const SignUp = () => {
-  const [signUpMode, setSignUpMode] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
   // id passed by backend
-  const [id, setUserID] = useState("");
+  const [id, setUserID] = useState('')
 
   return (
     <>
-      {signUpMode && (
-        <SignUpForm
-          setSignUpMode={setSignUpMode}
-          setUserID={setUserID}
-          setLoading={setLoading}
-        />
-      )}
-      {!signUpMode && !loading && <QRCodeScreen id={id} includeMargin={true} />}
+      {!id && <SignUpForm setUserID={setUserID} setLoading={setLoading} />}
+      {id && !loading && <QRCodeScreen id={id} includeMargin={true} />}
     </>
-  );
-};
+  )
+}
 
 const QRCodeScreen = props => {
   return (
@@ -42,60 +35,58 @@ const QRCodeScreen = props => {
         <QRCode value={props.id} id="123456" style={{ maxWidth: 256 }} />
       </div>
     </div>
-  );
-};
+  )
+}
 
 const SignUpForm = props => {
-  const { setSignUpMode, setUserID, setLoading } = props;
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const { setUserID, setLoading } = props
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
   const {
     isFetching: isFetchingSignUpUser,
     response: signedUpUserResponse,
-    makeFetch: fetchSignUpUser
-  } = useApi(userSignupApi.userSignUp);
+    makeFetch: fetchSignUpUser,
+  } = useApi(userSignupApi.userSignUp)
 
   useEffect(() => {
     if (!signedUpUserResponse) {
-      return;
+      return
     }
-
-    const { id } = signedUpUserResponse.data;
-    setUserID(id);
-  }, [signedUpUserResponse]);
+    const { id } = signedUpUserResponse.data.createUser
+    setUserID(id)
+  }, [signedUpUserResponse])
 
   const signUpUser = () => {
     if (!validateField) {
-      return;
+      return
     }
 
-    fetchSignUpUser({ firstName, lastName, email });
-    setSignUpMode(false);
-  };
+    fetchSignUpUser({ firstName, lastName, email })
+  }
 
   const validateField = () => {
-    if (firstName.trim() === "" || lastName.trim() === "") {
-      return false;
+    if (firstName.trim() === '' || lastName.trim() === '') {
+      return false
     }
-    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)
     if (!emailValid) {
-      return false;
+      return false
     }
-    return true;
-  };
+    return true
+  }
 
   const handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    if (name === "firstName") {
-      setFirstName(value);
-    } else if (name === "lastName") {
-      setLastName(value);
-    } else if (name === "email") {
-      setEmail(value);
+    const name = event.target.name
+    const value = event.target.value
+    if (name === 'firstName') {
+      setFirstName(value)
+    } else if (name === 'lastName') {
+      setLastName(value)
+    } else if (name === 'email') {
+      setEmail(value)
     }
-  };
+  }
 
   return (
     <div className={styles.signUpForm}>
@@ -127,6 +118,6 @@ const SignUpForm = props => {
         Sign Up
       </Button>
     </div>
-  );
-};
-export default SignUp;
+  )
+}
+export default SignUp
