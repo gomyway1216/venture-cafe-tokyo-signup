@@ -58,7 +58,7 @@ const SignUpForm = props => {
   }, [signedUpUserResponse])
 
   const signUpUser = () => {
-    if (!validateField) {
+    if (!validateField()) {
       return
     }
 
